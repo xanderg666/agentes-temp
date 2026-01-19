@@ -1,0 +1,641 @@
+nohup: ignoring input
+
+============================================================
+🚀 Iniciando servidor Flask con Memoria + Caché Redis
+============================================================
+✅ Conectado a Redis en localhost:6379
+✅ Redis conectado
+   - Memoria usada: 1.67M
+   - Queries cacheadas: 1
+
+📡 Endpoints disponibles:
+   POST /api/chat        - Chat con memoria y caché
+   POST /api/reset       - Limpiar memoria de sesión
+   GET  /api/cache/stats - Estadísticas del caché
+   POST /api/cache/clear - Limpiar todo el caché
+   GET  /health          - Health check
+============================================================
+
+ * Serving Flask app 'api_memory_cached'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.0.0.76:5001
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 127-881-986
+127.0.0.1 - - [18/Jan/2026 13:30:25] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:30:34] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:30:45] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:30:54] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:31:05] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:31:11] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:31:14] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:31:25] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:31:34] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:31:52] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:32:11] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:32:51] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:33:11] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:33:52] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:34:12] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:34:51] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:35:11] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:35:18] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:35:25] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:35:31] "POST /api/chat HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:35:31] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:35:34] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:35:45] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:35:54] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:36:05] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:36:12] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:36:14] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:36:25] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:36:34] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:36:45] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:37:11] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:37:52] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:38:12] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:38:51] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:39:11] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:39:52] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:40:12] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:40:51] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:41:11] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:41:26] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:41:34] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:41:45] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:41:54] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:42:05] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:42:11] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:42:14] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:42:25] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:42:51] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:43:11] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:43:52] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:44:11] "GET /api/cache/stats HTTP/1.1" 200 -
+127.0.0.1 - - [18/Jan/2026 13:44:51] "GET /api/cache/stats HTTP/1.1" 200 -
+141.11.213.161 - - [18/Jan/2026 13:51:46] "GET / HTTP/1.1" 200 -
+45.156.128.114 - - [18/Jan/2026 14:16:10] code 400, message Bad request version ('À\x14À')
+45.156.128.114 - - [18/Jan/2026 14:16:10] "[31m[1m\x16\x03\x01\x00\x9d\x01\x00\x00\x99\x03\x03´ß=:A\x96ì\x89\x8fÕ²w­Wæo\x08ùüI\x1c\x02Aÿ\x90GþJ[{ú\x88\x00\x00BÀ\x11À\x07À\x13À\x09À\x14À[0m" 400 -
+45.156.128.113 - - [18/Jan/2026 14:16:33] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00\x9d\x01\x00\x00\x99\x03\x03\x97\x08\x90Ä\x8c\x10\x86ZF]âÚB©¬es×,\x0e´÷K\x9f$Ö+IíÃQ\x14\x00\x00BÀ\x11À\x07À\x13À')
+45.156.128.113 - - [18/Jan/2026 14:16:33] "[31m[1m\x16\x03\x01\x00\x9d\x01\x00\x00\x99\x03\x03\x97\x08\x90Ä\x8c\x10\x86ZF]âÚB©¬es×,\x0e´÷K\x9f$Ö+IíÃQ\x14\x00\x00BÀ\x11À\x07À\x13À\x09À\x14À[0m" 400 -
+95.214.55.246 - - [18/Jan/2026 15:00:56] "[31m[1mPOST / HTTP/1.1[0m" 405 -
+95.214.55.246 - - [18/Jan/2026 15:00:56] "[33mPOST /_next HTTP/1.1[0m" 404 -
+95.214.55.246 - - [18/Jan/2026 15:00:57] "[33mPOST /api HTTP/1.1[0m" 404 -
+95.214.55.246 - - [18/Jan/2026 15:00:57] "[33mPOST /_next/server HTTP/1.1[0m" 404 -
+95.214.55.246 - - [18/Jan/2026 15:00:57] "[33mPOST /app HTTP/1.1[0m" 404 -
+95.214.55.246 - - [18/Jan/2026 15:00:57] "[33mPOST /api/route HTTP/1.1[0m" 404 -
+91.231.89.235 - - [19/Jan/2026 02:27:07] code 400, message Bad request version ('\x9cm\x11à\x18KáYý\x18Á\x17¢hæ}\x97\x9f\x86õ=.\x16\x0fü')
+91.231.89.235 - - [19/Jan/2026 02:27:07] "[31m[1m\x16\x03\x03\x01¨\x01\x00\x01¤\x03\x03\x96!\x1c½à\x11Ò\x8bÜ¶Ñ\x16*?ù*TæY0\x02\x14éþã\x01ñça\x82\x03B \x9cm\x11à\x18KáYý\x18Á\x17¢hæ}\x97\x9f\x86õ=.\x16\x0fü[0m" 400 -
+91.231.89.238 - - [19/Jan/2026 02:27:11] "GET / HTTP/1.1" 200 -
+91.196.152.213 - - [19/Jan/2026 02:29:07] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+65.49.1.232 - - [19/Jan/2026 02:58:05] code 400, message Bad request version ('À\x14À')
+65.49.1.232 - - [19/Jan/2026 02:58:05] "[31m[1m\x16\x03\x01\x00{\x01\x00\x00w\x03\x03\x94S|\x09íÍ¸s\x10ÞVóýXÚ×ç¤Ç;\x03\x95¼-â¦\x0b\x96QÊ8\x0f\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À[0m" 400 -
+147.185.132.225 - - [19/Jan/2026 02:59:51] code 400, message Bad request version ('À\x13À')
+147.185.132.225 - - [19/Jan/2026 02:59:51] "[31m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03ïª\x8bKý\x18\x95\x83Ã©i\x14\x8aä)¤ãUD\x80#TU´Å~69×*\x07\x14 \x13\x17(A[#I"\x86Iê\x07jÚØ7:$\x93\x18Éßr*tÉKm\x049î5\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À[0m" 400 -
+147.185.132.225 - - [19/Jan/2026 02:59:51] code 400, message Bad HTTP/0.9 request type ("\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03Öã%F@¤6\x00æ\x18d\x10\x7f\x81ò\x9fê@_\x13\x19\x16¡Ò«'ô\x8c\x06SW¬\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À")
+147.185.132.225 - - [19/Jan/2026 02:59:51] "[31m[1m\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03Öã%F@¤6\x00æ\x18d\x10\x7f\x81ò\x9fê@_\x13\x19\x16¡Ò«'ô\x8c\x06SW¬\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À[0m" 400 -
+205.210.31.10 - - [19/Jan/2026 03:26:52] "GET / HTTP/1.1" 200 -
+172.232.188.177 - - [19/Jan/2026 03:47:45] code 400, message Bad request version ('\x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_')
+172.232.188.177 - - [19/Jan/2026 03:47:45] "[31m[1m\x01\x00\x00ýÎú\x0b° \x00\x00\x00MMS\x14\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00\x01\x00\x03\x00ðððð\x0b\x00\x04\x00\x1c\x00\x03\x00N\x00S\x00P\x00l\x00a\x00y\x00e\x00r\x00/\x009\x00.\x000\x00.\x000\x00.\x002\x009\x008\x000\x00;\x00 \x00{\x000\x000\x000\x000\x00A\x00A\x000\x000\x00-\x000\x00A\x000\x000\x00-\x000\x000\x00a\x000\x00-\x00A\x00A\x000\x00A\x00-\x000\x000\x000\x000\x00A\x000\x00A\x00A\x000\x00A\x00A\x000\x00}\x00\x00\x00àmß_[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:47:50] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+172.232.188.177 - - [19/Jan/2026 03:47:50] "[31m[1m\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x0cGetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:47:51] "GET / HTTP/1.0" 200 -
+172.232.188.177 - - [19/Jan/2026 03:47:51] "OPTIONS / HTTP/1.0" 200 -
+172.232.188.177 - - [19/Jan/2026 03:47:51] code 400, message Bad request version ('RTSP/1.0')
+172.232.188.177 - - [19/Jan/2026 03:47:51] "[31m[1mOPTIONS / RTSP/1.0[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:47:56] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+172.232.188.177 - - [19/Jan/2026 03:47:56] "[31m[1m\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:01] code 400, message Bad HTTP/0.9 request type ('\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:01] "[31m[1m\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:06] code 400, message Bad HTTP/0.9 request type ('\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:06] "[31m[1m\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:06] code 400, message Bad request syntax ('HELP')
+172.232.188.177 - - [19/Jan/2026 03:48:06] "[31m[1mHELP[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:06] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:06] "[31m[1m\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:07] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie:')
+172.232.188.177 - - [19/Jan/2026 03:48:07] "[31m[1m\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie: mstshash=nmap[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:07] code 400, message Bad request version ('\x00/\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:07] "[31m[1m\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:07] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+172.232.188.177 - - [19/Jan/2026 03:48:07] "[31m[1m\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:12] code 400, message Bad request version ('0.12\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:12] "[31m[1m\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:17] code 400, message Bad HTTP/0.9 request type ('l\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:17] "[31m[1ml\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:17] "[33mGET /nice%20ports,/Trinity.txt.bak HTTP/1.0[0m" 404 -
+172.232.188.177 - - [19/Jan/2026 03:48:17] code 400, message Bad request syntax ('\x01default')
+172.232.188.177 - - [19/Jan/2026 03:48:17] "[31m[1m\x01default[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:18] code 400, message Bad request syntax ('0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:18] "[31m[1m0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:23] code 400, message Bad HTTP/0.9 request type ('0')
+172.232.188.177 - - [19/Jan/2026 03:48:23] "[31m[1m0\x0c\x02\x01\x01`\x07\x02\x01\x02\x04\x00\x80\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:23] code 400, message Bad request version ('SIP/2.0')
+172.232.188.177 - - [19/Jan/2026 03:48:23] "[31m[1mOPTIONS sip:nm SIP/2.0[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:28] code 400, message Bad request syntax ('TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:28] "[31m[1mTNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:33] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:33] "[31m[1m\x03\x00\x00\x0b\x06à\x00\x00\x00\x00\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:38] code 400, message Bad request syntax ('DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13')
+172.232.188.177 - - [19/Jan/2026 03:48:38] "[31m[1mDmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:43] code 400, message Bad HTTP/0.9 request type (':\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@')
+172.232.188.177 - - [19/Jan/2026 03:48:43] "[31m[1m:\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:48] code 400, message Bad request syntax ('JRMI\x00\x02K')
+172.232.188.177 - - [19/Jan/2026 03:48:48] "[31m[1mJRMI\x00\x02K[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:53] code 400, message Bad HTTP/0.9 request type ('\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:53] "[31m[1m\x00Z\x00\x00\x01\x00\x00\x00\x016\x01,\x00\x00\x08\x00\x7fÿ\x7f\x08\x00\x00\x00\x01\x00 \x00:\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x004æ\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00(CONNECT_DATA=(COMMAND=version))[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:48:58] code 400, message Bad request version ('\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00')
+172.232.188.177 - - [19/Jan/2026 03:48:58] "[31m[1m\x12\x01\x004\x00\x00\x00\x00\x00\x00\x15\x00\x06\x01\x00\x1b\x00\x01\x02\x00\x1c\x00\x0c\x03\x00(\x00\x04ÿ\x08\x00\x01U\x00\x00\x00MSSQLServer\x00H\x0f\x00\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:49:03] code 400, message Bad request syntax ('\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00')
+172.232.188.177 - - [19/Jan/2026 03:49:03] "[31m[1m\x00\x03\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x0f\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:49:08] code 400, message Bad request syntax ('GIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00')
+172.232.188.177 - - [19/Jan/2026 03:49:08] "[31m[1mGIOP\x01\x00\x01\x00$\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x06\x00\x00\x00abcdef\x00\x00\x04\x00\x00\x00get\x00\x00\x00\x00\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:49:13] code 400, message Bad HTTP/0.9 request type ('AMQP\x00\x00')
+172.232.188.177 - - [19/Jan/2026 03:49:13] "[31m[1mAMQP\x00\x00\x09\x01[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:49:14] "[33mGET /devicedesc.xml HTTP/1.1[0m" 404 -
+172.232.188.177 - - [19/Jan/2026 03:49:14] code 400, message Bad request syntax ('CONNECT')
+172.232.188.177 - - [19/Jan/2026 03:49:14] "[31m[1mCONNECT[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:49:19] code 400, message Bad HTTP/0.9 request type ('¤\x00\x00\x00\x00\x00\x00\x00')
+172.232.188.177 - - [19/Jan/2026 03:49:19] "[31m[1m¤\x00\x00\x00\x00\x00\x00\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00¤\x00\x00\x00\x00\x00\x00\x00\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:49:24] code 400, message Bad request syntax ('\x01\x00\x00\x00')
+172.232.188.177 - - [19/Jan/2026 03:49:24] "[31m[1m\x01\x00\x00\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:49:24] code 400, message Bad request version ('\x00/\x00')
+172.232.188.177 - - [19/Jan/2026 03:49:24] "[31m[1m\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:49:29] "GET / HTTP/1.1" 200 -
+172.232.188.177 - - [19/Jan/2026 03:49:34] code 400, message Bad request version ("bùÅ!ë\x7fauÏ\x07\x10\x14\x00\x9c\x13\x02\x13\x03\x13\x01\x003\x009\x005\x00/À,À0\x00£\x00\x9fÌ©Ì¨ÌªÀ¯À\xadÀ£À\x9fÀ]ÀaÀWÀSÀ+À/\x00¢\x00\x9eÀ®À¬À¢À\x9eÀ\\À`ÀVÀRÀ$À(\x00k\x00jÀsÀw\x00Ä\x00ÃÀ#À'\x00g\x00@ÀrÀv\x00¾\x00½À")
+172.232.188.177 - - [19/Jan/2026 03:49:34] "[31m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03D/©w"¨8þBr\x17âÐ\x11l~g\x83\x9f\x07\x1bH\x97\x1eW\x95\x89\x92È\x9fVå \x11dNf3B*\x89×\x9cM\x0d°µÞ\x14üÓÝ\x1fbùÅ!ë\x7fauÏ\x07\x10\x14\x00\x9c\x13\x02\x13\x03\x13\x01\x003\x009\x005\x00/À,À0\x00£\x00\x9fÌ©Ì¨ÌªÀ¯À­À£À\x9fÀ]ÀaÀWÀSÀ+À/\x00¢\x00\x9eÀ®À¬À¢À\x9eÀ\\À`ÀVÀRÀ$À(\x00k\x00jÀsÀw\x00Ä\x00ÃÀ#À'\x00g\x00@ÀrÀv\x00¾\x00½À[0m" 400 -
+172.232.188.177 - - [19/Jan/2026 03:49:56] code 400, message Bad HTTP/0.9 request type ('\x80\x00\x00(*Ù\x0f¶\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86')
+172.232.188.177 - - [19/Jan/2026 03:49:56] "[31m[1m\x80\x00\x00(*Ù\x0f¶\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00[0m" 400 -
+205.210.31.78 - - [19/Jan/2026 04:08:46] "GET / HTTP/1.1" 200 -
+45.33.12.214 - - [19/Jan/2026 04:32:35] "GET / HTTP/1.1" 200 -
+172.104.11.51 - - [19/Jan/2026 05:36:26] "GET / HTTP/1.1" 200 -
+95.214.55.246 - - [19/Jan/2026 06:14:46] "[31m[1mPOST / HTTP/1.1[0m" 405 -
+95.214.55.246 - - [19/Jan/2026 06:14:46] "[33mPOST /_next HTTP/1.1[0m" 404 -
+95.214.55.246 - - [19/Jan/2026 06:14:46] "[33mPOST /api HTTP/1.1[0m" 404 -
+95.214.55.246 - - [19/Jan/2026 06:14:47] "[33mPOST /_next/server HTTP/1.1[0m" 404 -
+95.214.55.246 - - [19/Jan/2026 06:14:47] "[33mPOST /app HTTP/1.1[0m" 404 -
+95.214.55.246 - - [19/Jan/2026 06:14:47] "[33mPOST /api/route HTTP/1.1[0m" 404 -
+3.137.73.221 - - [19/Jan/2026 06:52:57] "GET / HTTP/1.1" 200 -
+3.137.73.221 - - [19/Jan/2026 06:55:09] "GET / HTTP/1.1" 200 -
+3.137.73.221 - - [19/Jan/2026 06:56:04] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03³9\x81ºmmvìyB|"µÎbÚñ#r9Ö\x03\x17\x92øvÝ|*\x1aó*\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+3.137.73.221 - - [19/Jan/2026 06:56:04] "[31m[1m\x16\x03\x01\x00{\x01\x00\x00w\x03\x03³9\x81ºmmvìyB|"µÎbÚñ#r9Ö\x03\x17\x92øvÝ|*\x1aó*\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À[0m" 400 -
+3.137.73.221 - - [19/Jan/2026 06:57:44] code 400, message Bad request syntax ('SSH-2.0-Go')
+3.137.73.221 - - [19/Jan/2026 06:57:44] "[31m[1mSSH-2.0-Go[0m" 400 -
+3.137.73.221 - - [19/Jan/2026 06:59:02] code 400, message Bad request version ('À\x14À')
+3.137.73.221 - - [19/Jan/2026 06:59:02] "[31m[1m\x16\x03\x01\x00{\x01\x00\x00w\x03\x03 ´\x0fIßzÇÖÌì\x15\x07\x02:¤âDÞ+\x10õw©)¤V\x1cö\x92q\x87R\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\x09À\x14À[0m" 400 -
+45.91.64.8 - - [19/Jan/2026 08:26:57] "GET / HTTP/1.0" 200 -
+205.210.31.16 - - [19/Jan/2026 09:06:47] code 400, message Bad request version ('À\x13À')
+205.210.31.16 - - [19/Jan/2026 09:06:47] "[31m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03¸þïèÝäU®îñÿB\x8dìô.mÇ8`!\x06*b\x83¾\x1cæÍØ\x10' \x0e%\x98.ú°l\x8blöÆîÒë\x1erÏ\x86\x9f=8*\x1fá0,\x894\x19ËÎ°\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À[0m" 400 -
+205.210.31.16 - - [19/Jan/2026 09:06:47] code 400, message Bad request version ('À(À$À\x14À')
+205.210.31.16 - - [19/Jan/2026 09:06:47] "[31m[1m\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03\x95\x1d°Uu\x1a³ô3aê\x09°Þ{±@Ú\x14 ÷5\x05\x8c\x8d^>4ìDó¤\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À[0m" 400 -
+152.203.52.71 - - [19/Jan/2026 13:30:36] "POST /api/chat HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:31:30] "POST /api/chat HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:31:53] "POST /api/chat HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:32:28] "POST /api/chat HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:32:53] "POST /api/chat HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:33:15] "POST /api/chat HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:34:10] "POST /api/chat HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:34:29] "POST /api/chat HTTP/1.1" 200 -
+
+============================================================
+🚀 Iniciando servidor Flask con Memoria + Caché Redis
+============================================================
+✅ Conectado a Redis en localhost:6379
+✅ Redis conectado
+   - Memoria usada: 1.69M
+   - Queries cacheadas: 1
+
+📡 Endpoints disponibles:
+   POST /api/chat        - Chat con memoria y caché
+   POST /api/reset       - Limpiar memoria de sesión
+   GET  /api/cache/stats - Estadísticas del caché
+   POST /api/cache/clear - Limpiar todo el caché
+   GET  /health          - Health check
+============================================================
+
+
+>>> Procesando pregunta (sesión: cached_user): ¿Cuál es el valor de la UVR en los días del mes de enero de 2025?
+... Contextualizando pregunta ...
+... Pensando ruta ...
+Decisión: runsql
+Necesita datos nuevos: True
+Razonamiento: La pregunta busca datos específicos (UVR en enero 2025) sin explicación ni análisis. No hay contexto previo, por lo que se necesitan datos nuevos. 'runsql' es adecuado para obtener datos crudos.
+💨 CACHE MISS: runsql - ¿cuál es el valor de la uvr en los días del mes de...
+
+--- Llamando al endpoint: RUNSQL ---
+URL: https://g3fd5aaa58984b8-agent.adb.us-ashburn-1.oraclecloudapps.com/ords/br_llama/llama_api/runsql
+💾 CACHED: runsql - TTL: 1800s
+
+💨 CACHE MISS
+⏱️  Tiempo total: 7.28s
+
+>>> Procesando pregunta (sesión: usuariojj_test123): Cuál es el valor de la inflación en enero de 2025?
+... Contextualizando pregunta ...
+... Pensando ruta ...
+Decisión: runsql
+Necesita datos nuevos: True
+Razonamiento: La pregunta requiere obtener datos crudos (valor de la inflación en enero de 2025) sin explicación, y no hay contexto previo, por lo que se necesita consultar nuevos datos.
+💨 CACHE MISS: runsql - cuál es el valor de la inflación en enero de 2025?...
+
+--- Llamando al endpoint: RUNSQL ---
+URL: https://g3fd5aaa58984b8-agent.adb.us-ashburn-1.oraclecloudapps.com/ords/br_llama/llama_api/runsql
+💾 CACHED: runsql - TTL: 1800s
+
+💨 CACHE MISS
+⏱️  Tiempo total: 19.14s
+
+>>> Procesando pregunta (sesión: usuariojj_test123): Cuál es el valor de la inflación en febrero de 2025?
+... Contextualizando pregunta ...
+Pregunta reformulada: ¿Cuál es el valor de la inflación en febrero de 2025?
+... Pensando ruta ...
+Decisión: runsql
+Necesita datos nuevos: True
+Razonamiento: El usuario solicita el valor de la inflación en febrero de 2025, lo cual requiere consultar nuevos datos que no están presentes en el contexto actual. El endpoint 'runsql' es el adecuado para obtener datos crudos sin explicación.
+💨 CACHE MISS: runsql - ¿cuál es el valor de la inflación en febrero de 20...
+
+--- Llamando al endpoint: RUNSQL ---
+URL: https://g3fd5aaa58984b8-agent.adb.us-ashburn-1.oraclecloudapps.com/ords/br_llama/llama_api/runsql
+💾 CACHED: runsql - TTL: 1800s
+
+💨 CACHE MISS
+⏱️  Tiempo total: 11.98s
+
+>>> Procesando pregunta (sesión: usuariojj_test123): Cuál es el valor de la inflación en febrero de 2025 y dame sus conceptos?
+... Contextualizando pregunta ...
+Pregunta reformulada: ¿Cuál es el valor de la inflación en febrero de 2025 y cuáles son los conceptos asociados a ese valor?
+... Pensando ruta ...
+Decisión: runsql
+Necesita datos nuevos: True
+Razonamiento: El usuario solicita datos crudos (valor de la inflación en febrero de 2025) que no están disponibles en el contexto actual. El endpoint 'runsql' es el más apropiado para obtener datos crudos sin explicación.
+💨 CACHE MISS: runsql - ¿cuál es el valor de la inflación en febrero de 20...
+
+--- Llamando al endpoint: RUNSQL ---
+URL: https://g3fd5aaa58984b8-agent.adb.us-ashburn-1.oraclecloudapps.com/ords/br_llama/llama_api/runsql
+💾 CACHED: runsql - TTL: 1800s
+
+💨 CACHE MISS
+⏱️  Tiempo total: 8.16s
+
+>>> Procesando pregunta (sesión: usuariojj_test123): Cuál es el valor de la inflación en enero y febrero de 2025?
+... Contextualizando pregunta ...
+Pregunta reformulada: ¿Cuáles son los valores de la inflación en enero y febrero de 2025?
+... Pensando ruta ...
+Decisión: runsql
+Necesita datos nuevos: True
+Razonamiento: La pregunta requiere datos crudos sobre la inflación en enero y febrero de 2025. Aunque hay contexto sobre febrero, se necesitan nuevos datos para enero. El endpoint 'runsql' es adecuado para obtener datos crudos sin explicación.
+💨 CACHE MISS: runsql - ¿cuáles son los valores de la inflación en enero y...
+
+--- Llamando al endpoint: RUNSQL ---
+URL: https://g3fd5aaa58984b8-agent.adb.us-ashburn-1.oraclecloudapps.com/ords/br_llama/llama_api/runsql
+💾 CACHED: runsql - TTL: 1800s
+
+💨 CACHE MISS
+⏱️  Tiempo total: 8.25s
+
+>>> Procesando pregunta (sesión: usuariojj_test123): Cuál es el valor de la inflación anual en enero y febrero de 2025?
+... Contextualizando pregunta ...
+Pregunta reformulada: ¿Cuáles son los valores de la inflación anual en enero y febrero de 2025?
+... Pensando ruta ...
+Decisión: runsql
+Necesita datos nuevos: True
+Razonamiento: La pregunta requiere datos crudos sobre la inflación en enero y febrero de 2025, y el contexto disponible solo contiene información sobre febrero. Por lo tanto, se necesitan nuevos datos para responder a la pregunta.
+💨 CACHE MISS: runsql - ¿cuáles son los valores de la inflación anual en e...
+
+--- Llamando al endpoint: RUNSQL ---
+URL: https://g3fd5aaa58984b8-agent.adb.us-ashburn-1.oraclecloudapps.com/ords/br_llama/llama_api/runsql
+💾 CACHED: runsql - TTL: 1800s
+
+💨 CACHE MISS
+⏱️  Tiempo total: 8.1s
+
+>>> Procesando pregunta (sesión: usuariojj_test123): Cuál es el valor de la inflación anual en enero y febrero de 2025 y dame el nombre de los conceptos?
+... Contextualizando pregunta ...
+Pregunta reformulada: ¿Cuáles son los valores de la inflación anual y sus respectivos conceptos para enero y febrero de 2025?
+... Pensando ruta ...
+Decisión: runsql
+Necesita datos nuevos: True
+Razonamiento: El usuario solicita datos específicos (inflación anual en enero y febrero de 2025) que no están completamente disponibles en el contexto proporcionado. El endpoint 'runsql' es adecuado para obtener datos crudos sin explicación.
+💨 CACHE MISS: runsql - ¿cuáles son los valores de la inflación anual y su...
+
+--- Llamando al endpoint: RUNSQL ---
+URL: https://g3fd5aaa58984b8-agent.adb.us-ashburn-1.oraclecloudapps.com/ords/br_llama/llama_api/runsql
+💾 CACHED: runsql - TTL: 1800s
+
+💨 CACHE MISS
+⏱️  Tiempo total: 8.34s
+
+>>> Procesando pregunta (sesión: usuariojj_test123): Cuál es el valor de la trm en enero de 2025?
+... Contextualizando pregunta ...
+Pregunta reformulada: ¿Cuál es el valor de la Tasa Representativa del Mercado (TRM) en enero de 2025?
+... Pensando ruta ...
+Decisión: runsql
+Necesita datos nuevos: True
+Razonamiento: La pregunta requiere consultar nuevos datos de la base para obtener el valor de la TRM en enero de 2025, sin necesidad de explicación o análisis adicional.
+💨 CACHE MISS: runsql - ¿cuál es el valor de la tasa representativa del me...
+
+--- Llamando al endpoint: RUNSQL ---
+URL: https://g3fd5aaa58984b8-agent.adb.us-ashburn-1.oraclecloudapps.com/ords/br_llama/llama_api/runsql
+💾 CACHED: runsql - TTL: 1800s
+
+💨 CACHE MISS
+⏱️  Tiempo total: 13.55s
+
+>>> Procesando pregunta (sesión: usuariojj_test123): Cuál es el valor de la trm en febrero de 2025?
+... Contextualizando pregunta ...
+Pregunta reformulada: ¿Cuál es el valor de la Tasa Representativa del Mercado (TRM) en febrero de 2025?
+... Pensando ruta ...
+Decisión: runsql
+Necesita datos nuevos: True
+Razonamiento: El usuario solicita el valor de la TRM en febrero de 2025, lo cual requiere consultar nuevos datos que no están presentes en el contexto actual. El endpoint 'runsql' es el adecuado para obtener datos crudos sin explicación.
+💨 CACHE MISS: runsql - ¿cuál es el valor de la tasa representativa del me...
+
+--- Llamando al endpoint: RUNSQL ---
+URL: https://g3fd5aaa58984b8-agent.adb.us-ashburn-1.oraclecloudapps.com/ords/br_llama/llama_api/runsql
+💾 CACHED: runsql - TTL: 1800s
+
+💨 CACHE MISS
+⏱️  Tiempo total: 7.88s
+
+>>> Procesando pregunta (sesión: usuariojj_test123): Cuál es el valor de la trm en enero de 2025?
+... Contextualizando pregunta ...152.203.52.71 - - [19/Jan/2026 13:34:49] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:35:14] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:35:49] "GET / HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:35:49] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:35:49] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+181.233.145.193 - - [19/Jan/2026 13:35:59] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:36:09] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:36:12] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:36:12] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:36:19] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:36:29] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:36:39] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:36:40] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:36:49] "GET /api/cache/stats HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:36:56] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:36:59] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:37:09] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:37:19] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:37:29] "GET /api/cache/stats HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:37:54] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:37:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:38:57] "GET /api/cache/stats HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:39:40] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:39:57] "GET /api/cache/stats HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:40:49] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:40:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:41:11] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:41:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:42:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:43:57] "GET /api/cache/stats HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:44:41] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:44:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:45:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:46:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:47:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:48:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:49:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:50:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:51:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:52:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:53:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:54:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:55:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:56:57] "GET /api/cache/stats HTTP/1.1" 200 -
+152.203.52.71 - - [19/Jan/2026 13:57:29] "POST /api/chat HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:57:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:58:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 13:59:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:00:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:01:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:02:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:03:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:04:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:05:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:06:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:07:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:08:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:09:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:10:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:11:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:12:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:13:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:14:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:15:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:16:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:17:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:18:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:19:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:20:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:21:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:22:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:23:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:24:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:25:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:26:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:27:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:28:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:29:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:30:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:31:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:32:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:33:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:34:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:35:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:36:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:37:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:38:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:39:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:40:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:41:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:42:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:43:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:44:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:45:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:46:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:47:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:48:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:49:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:50:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:51:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:52:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:53:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:54:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:55:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:56:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:57:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:58:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 14:59:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:00:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:01:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:02:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:03:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:04:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:05:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:06:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:07:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:08:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:09:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:10:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:11:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:12:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:13:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:14:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:15:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:16:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:17:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:18:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:19:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:24:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:25:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:26:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:27:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:28:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 15:29:57] "GET /api/cache/stats HTTP/1.1" 200 -
+52.188.189.7 - - [19/Jan/2026 16:15:55] "[33mGET /v2/ HTTP/1.1[0m" 404 -
+198.235.24.43 - - [19/Jan/2026 19:34:22] "GET / HTTP/1.1" 200 -
+44.220.188.124 - - [19/Jan/2026 19:36:53] code 400, message Bad request version ("ë43ÁÆÎµ\x86'\x838SzÉAw1yÞØô\x99ÓI\x1bi\x81¯Ï'\x96ß\x00V\x13\x02\x13\x03\x13\x01À,À0À+À/Ì©Ì¨\x00\x9f\x00\x9eÌªÀ¯À\xadÀ®À¬À$À(À#À'À")
+44.220.188.124 - - [19/Jan/2026 19:36:53] "[31m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03\x05áÄmñ¢VÝôw¾\x0feoõ\x1d\x98½pz\x92C\x0f\x1b)q^Û\x07\x9f}3 ë43ÁÆÎµ\x86'\x838SzÉAw1yÞØô\x99ÓI\x1bi\x81¯Ï'\x96ß\x00V\x13\x02\x13\x03\x13\x01À,À0À+À/Ì©Ì¨\x00\x9f\x00\x9eÌªÀ¯À­À®À¬À$À(À#À'À[0m" 400 -
+44.220.188.124 - - [19/Jan/2026 19:36:53] "GET / HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 19:58:52] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 19:59:53] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:00:54] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:01:55] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:02:56] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:03:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:04:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:05:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:06:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:07:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:08:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:09:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:10:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:11:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:12:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:13:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:14:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:15:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:16:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:17:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:18:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:19:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:20:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:21:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:22:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:23:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:24:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:25:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:26:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:27:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:28:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:29:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:30:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:31:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:32:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:33:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:34:37] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:34:39] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:34:49] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:35:00] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:35:09] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:35:19] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:35:29] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:35:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:36:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:37:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:38:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:39:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:40:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:41:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:42:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:43:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:44:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:45:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:46:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:47:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:48:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:49:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:50:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:51:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:52:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:53:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:54:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:55:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:56:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:57:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:58:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 20:59:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:00:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:01:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:02:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:03:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:04:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:05:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:06:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:07:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:08:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:09:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:10:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:11:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:12:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:13:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:14:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:15:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:16:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:17:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:18:58] "GET /api/cache/stats HTTP/1.1" 200 -
+205.210.31.3 - - [19/Jan/2026 21:19:37] code 400, message Bad request version ('À\x13À')
+205.210.31.3 - - [19/Jan/2026 21:19:37] "[31m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03@\x9c·Ô;§)\x8dùànÊã\x0cÃ©â2|NÑýK1í\x16\x95­Û\x08¼Ò ô¬C®tuá7»ðÞmcY\x03¾×\x96º\x90Ã«ÉZ\x9eJ\x8aú-\x08J)\x00&À+À/À,À0Ì©Ì¨À\x09À\x13À[0m" 400 -
+205.210.31.3 - - [19/Jan/2026 21:19:37] code 400, message Bad request version ('À(À$À\x14À')
+205.210.31.3 - - [19/Jan/2026 21:19:37] "[31m[1m\x16\x03\x01\x00Ê\x01\x00\x00Æ\x03\x03Û\x0d\x0c\x80ö \x14)HcXÓ&KÀ\x0fwJCÐæ\x81\x83Æe-\x0bßóäÿ­\x00\x00hÌ\x14Ì\x13À/À+À0À,À\x11À\x07À'À#À\x13À\x09À(À$À\x14À[0m" 400 -
+181.233.145.193 - - [19/Jan/2026 21:19:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:20:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:21:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:22:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:23:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:24:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:25:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:26:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:27:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:28:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:29:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:30:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:31:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:32:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:33:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:34:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:35:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:36:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:37:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:38:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:39:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:40:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:41:49] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:42:00] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:42:10] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:42:20] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:42:30] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:42:40] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:42:50] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:43:51] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:44:52] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:45:53] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:46:54] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:47:55] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:48:56] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:49:57] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:50:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:51:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:52:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:53:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:54:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:55:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:56:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:57:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:58:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 21:59:58] "GET /api/cache/stats HTTP/1.1" 200 -
+181.233.145.193 - - [19/Jan/2026 22:00:58] "GET /api/cache/stats HTTP/1.1" 200 -
