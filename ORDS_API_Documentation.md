@@ -24,9 +24,9 @@ terminar el proceso
 ps aux | grep api_memory_cached.py
 ps aux | grep api_memory_cached.py <PID>
 ```
-
+```bash
 sudo lsof -i :5001
-
+```
 
 ```bash
 kill -9 <PID>

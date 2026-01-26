@@ -14,6 +14,13 @@ import config
 from memory_manager import get_session_history, clear_session
 from cache_manager import cache
 
+# --- Estructuras de Datos ---
+class QualityAssessment(BaseModel):
+    """Evaluación de calidad de la respuesta."""
+    is_valid: bool = Field(description="True si la respuesta es útil y contiene datos/información relevante. False si está vacía, es un error, o dice 'no encontrado' cuando debería haber datos.")
+    reason: str = Field(description="Breve explicación de la evaluación.")
+    needs_retry: bool = Field(description="True si vale la pena reintentar la consulta (ej: posible error transitorio o alucinación).")
+
 # 1. Configuración del LLM (Llama en OCI)
 llm = ChatOCIGenAI(
     model_id=config.MODEL_ID,
@@ -110,8 +117,29 @@ Responde ÚNICAMENTE con el texto de la interpretación (sin preámbulos)."""),
     ("human", "Datos para interpretar: {data}"),
 ])
 
-# Crear LLM estructurado para routing
+# 6. Prompt del Verificador de Calidad
+verifier_prompt = ChatPromptTemplate.from_messages([
+    ("system", """Eres un Supervisor de Calidad del Asistente Virtual del Banco República.
+Tu trabajo es revisar si la respuesta generada por el sistema es satisfactoria.
+
+CRITERIOS DE APROBACIÓN:
+1. Si la pregunta solicita datos (ej: TRM, IPC) y la respuesta contiene una lista de "datos" vacía ([]), esto es SOSPECHOSO (posible error de generación de SQL). -> needs_retry = True, is_valid = False.
+   - EXCEPCIÓN: Si la fecha es futura lejana (ej: año 2030) o muy antigua (antes de 1990), la falta de datos es correcta.
+2. Si la respuesta contiene errores explícitos ("ora-...", "error de sintaxis"). -> needs_retry = True.
+3. Si la respuesta ignora la parte "categórica" (divisiones de gasto) cuando fue solicitada. -> needs_retry = True.
+4. Si la interpretación es genérica o dice "no se pudo interpretar". -> is_valid = False.
+
+Tu prioridad es evitar entregar respuestas vacías cuando es muy probable que los datos existan.
+"""),
+    ("human", """Pregunta Original: {question}
+Respuesta Obtenida (JSON): {response_json}
+
+Evalúa la calidad.""")
+])
+
+# Crear LLMs estructurados
 router_llm = llm.with_structured_output(RouteDecision)
+verifier_llm = llm.with_structured_output(QualityAssessment)
 
 
 def standardize_response(response_data: Any) -> dict:
@@ -214,22 +242,30 @@ def standardize_response(response_data: Any) -> dict:
 
 
 # 5. Función para llamar a las APIs con CACHÉ
-def call_ords_api_cached(endpoint: str, question: str) -> dict:
+def call_ords_api_cached(endpoint: str, question: str, force_refresh: bool = False) -> dict:
     """
     Llama al endpoint ORDS con soporte de caché Redis.
     Primero busca en caché, si no existe, consulta la API y guarda en caché.
+    
+    Args:
+        endpoint: Endpoint de la API
+        question: Pregunta
+        force_refresh: Si es True, ignora el caché y fuerza una nueva consulta.
     """
     
-    # Intentar obtener del caché primero
-    cached_response = cache.get_ords_cache(endpoint, question)
-    if cached_response is not None:
-        # Asegurar que sea un diccionario para poder agregar metadatos
-        if isinstance(cached_response, list):
-            cached_response = {"datos": cached_response}
-        cached_response["_from_cache"] = True
-        return cached_response
+    # Intentar obtener del caché primero (si no se fuerza refresco)
+    if not force_refresh:
+        cached_response = cache.get_ords_cache(endpoint, question)
+        if cached_response is not None:
+            # Asegurar que sea un diccionario para poder agregar metadatos
+            if isinstance(cached_response, list):
+                cached_response = {"datos": cached_response}
+            cached_response["_from_cache"] = True
+            return cached_response
+    else:
+        print(f"🔄 Forzando refresco (ignorando caché) para: {endpoint}")
     
-    # No está en caché, llamar a la API
+    # No está en caché (o force_refresh), llamar a la API
     url = f"{config.ORDS_BASE_URL}/{endpoint}"
     headers = {"Content-Type": "application/json"}
     payload = {"question": question}
@@ -343,52 +379,98 @@ def process_question_with_cache(question: str, session_id: str = "default") -> d
     print(f"Necesita datos nuevos: {decision.needs_new_data}")
     print(f"Razonamiento: {decision.reasoning}")
     
-    # Paso 3: Ejecutar según la decisión (con caché)
+    # Paso 3: Ejecutar con Ciclo de Calidad (Retry Loop)
+    max_retries = 1
+    current_try = 0
+    final_result = None
     from_cache = False
     
-    if not decision.needs_new_data and has_history:
-        print("\n--- Usando GENAI con contexto existente ---")
-        context_for_genai = "\n".join([msg.content for msg in history.messages[-6:]])
-        genai_question = f"""Basándote en el siguiente contexto de la conversación, responde la pregunta del usuario.
-
-        CONTEXTO DE LA CONVERSACIÓN:
-        {context_for_genai}
-
-        PREGUNTA DEL USUARIO: {question}
-
-        Proporciona una respuesta clara y útil basándote ÚNICAMENTE en el contexto proporcionado."""
+    while current_try <= max_retries:
+        print(f"\n--- Intento {current_try + 1} de {max_retries + 1} ---")
         
-        result = call_ords_api_cached("genai", genai_question)
-    else:
-        result = call_ords_api_cached(decision.endpoint, standalone_question)
-    
-    # Verificar si vino del caché
-    from_cache = result.pop("_from_cache", False)
-    
-    # Paso 4: Interpretación de datos (Nueva funcionalidad)
-    if isinstance(result, dict) and "datos" in result and isinstance(result["datos"], list) and len(result["datos"]) > 0:
-        try:
-            print("... Generando interpretación de los datos ...")
-            # Limitamos la data para no saturar el contexto del LLM
-            data_sample = result["datos"][:20] if len(result["datos"]) > 20 else result["datos"]
-            data_str = json.dumps(data_sample, ensure_ascii=False)
-            
-            interp_chain = interpretation_prompt | llm
-            interpretation_msg = interp_chain.invoke({"data": data_str})
-            interpretation_text = interpretation_msg.content.strip()
-            
-            result["interpretacion"] = interpretation_text
-            print("Interpetación generada exitosamente.")
-        except Exception as e:
-            print(f"Error generando interpretación: {e}")
-            result["interpretacion"] = "No se pudo generar interpretación automática."
+        # Determinar si forzamos refresco (solo en reintentos)
+        force_refresh = (current_try > 0)
+        
+        if not decision.needs_new_data and has_history:
+            print("\n--- Usando GENAI con contexto existente ---")
+            context_for_genai = "\n".join([msg.content for msg in history.messages[-6:]])
+            genai_question = f"""Basándote en el siguiente contexto de la conversación, responde la pregunta del usuario.
 
+            CONTEXTO DE LA CONVERSACIÓN:
+            {context_for_genai}
+
+            PREGUNTA DEL USUARIO: {question}
+
+            Proporciona una respuesta clara y útil basándote ÚNICAMENTE en el contexto proporcionado."""
+            
+            result = call_ords_api_cached("genai", genai_question, force_refresh=force_refresh)
+        else:
+            result = call_ords_api_cached(decision.endpoint, standalone_question, force_refresh=force_refresh)
+        
+        # Verificar si vino del caché original
+        if current_try == 0:
+            from_cache = result.pop("_from_cache", False)
+        else:
+            # En reintentos siempre viene de API, ignoramos el flag interno
+            result.pop("_from_cache", False)
+            from_cache = False
+
+        # Paso 4: Interpretación de datos (si aplica)
+        if isinstance(result, dict) and "datos" in result and isinstance(result["datos"], list) and len(result["datos"]) > 0:
+            try:
+                print("... Generando interpretación de los datos ...")
+                data_sample = result["datos"][:20] if len(result["datos"]) > 20 else result["datos"]
+                data_str = json.dumps(data_sample, ensure_ascii=False)
+                
+                interp_chain = interpretation_prompt | llm
+                interpretation_msg = interp_chain.invoke({"data": data_str})
+                result["interpretacion"] = interpretation_msg.content.strip()
+            except Exception as e:
+                print(f"Error generando interpretación: {e}")
+                result["interpretacion"] = "No se pudo generar interpretación automática."
+        
+        # --- VERIFICACIÓN DE CALIDAD ---
+        # Solo verificamos si la decisión requería datos nuevos (runsql/agent)
+        if decision.needs_new_data:
+            print("... Verificando calidad de respuesta ...")
+            try:
+                # Preparamos resumen para el verificador
+                res_summary = json.dumps(result, ensure_ascii=False)[:2000] # Truncar si es muy largo
+                verify_chain = verifier_prompt | verifier_llm
+                quality = verify_chain.invoke({
+                    "question": question, 
+                    "response_json": res_summary
+                })
+                
+                print(f"Evaluación de Calidad: Válido={quality.is_valid}, Retry={quality.needs_retry}")
+                print(f"Razón: {quality.reason}")
+                
+                if quality.is_valid and not quality.needs_retry:
+                    final_result = result
+                    break # Salir del loop, es bueno
+                
+                if current_try < max_retries and quality.needs_retry:
+                    print(f"⚠️ Calidad insuficiente. Reintentando...")
+                    current_try += 1
+                    continue
+                else:
+                    print("⚠️ Calidad baja pero se acabaron los reintentos.")
+                    final_result = result
+                    break
+            except Exception as e:
+                print(f"Error en verificación de calidad: {e}")
+                final_result = result
+                break
+        else:
+            final_result = result
+            break
+
+    result = final_result
+    
     # Paso 5: Guardar en historial
     history.add_user_message(question)
     
     if isinstance(result, dict):
-        # Si incluimos interpretación, la agregamos a la respuesta textual para el historial, 
-        # pero la respuesta JSON mantiene la estructura separada.
         base_answer = result.get("answer", result.get("response", ""))
         if not base_answer and "interpretacion" in result:
              base_answer = result["interpretacion"]
