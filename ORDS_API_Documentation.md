@@ -22,8 +22,11 @@ terminar el proceso
 
 ```bash
 ps aux | grep api_memory_cached.py
-kill -9 <PID>
+ps aux | grep api_memory_cached.py <PID>
 ```
+
+sudo lsof -i :5001
+
 
 ```bash
 kill -9 <PID>

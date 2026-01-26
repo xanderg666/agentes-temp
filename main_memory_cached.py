@@ -54,7 +54,10 @@ considerando el historial de la conversación para que sea una pregunta independ
 Si la pregunta hace referencia a algo mencionado antes (como "eso", "lo anterior", "comparalo con", etc.),
 debes reformularla incluyendo el contexto necesario.
 
-Si la pregunta ya es clara y no depende del contexto, devuélvela tal cual.
+Si la pregunta es sobre indicadores económicos que pueden tener desglose (como "IPC", "Inflación", "Gastos"), 
+y el usuario no especifica un filtro particular, AÑADE explícitamente "incluyendo divisiones de gasto o categorías correspondientes" para obtener la información rica y categórica.
+
+Si la pregunta ya es clara y no depende del contexto, devuélvela tal cual (con la mejora de categorías si aplica).
 
 Solo responde con la pregunta reformulada, sin explicaciones adicionales."""),
     MessagesPlaceholder(variable_name="chat_history"),
@@ -93,6 +96,20 @@ NOTAS IMPORTANTES:
     ("human", "{question}"),
 ])
 
+# 5. Prompt para Interpretación de Datos
+interpretation_prompt = ChatPromptTemplate.from_messages([
+    ("system", """Eres un analista económico experto del Banco República.
+Tu tarea es interpretar los datos estructurados que recibes y generar un análisis breve y perspicaz.
+
+1. Identifica tendencias (subidas, bajadas).
+2. Destaca máximos y mínimos si son relevantes.
+3. Si hay datos categóricos (como divisiones de gasto), compara las categorías más significativas.
+4. Sé conciso pero útil.
+
+Responde ÚNICAMENTE con el texto de la interpretación (sin preámbulos)."""),
+    ("human", "Datos para interpretar: {data}"),
+])
+
 # Crear LLM estructurado para routing
 router_llm = llm.with_structured_output(RouteDecision)
 
@@ -126,6 +143,22 @@ def standardize_response(response_data: Any) -> dict:
         else:
             break
             
+    # 1.5. Manejiar caso de SQL sin alias (Key es la expresión SQL, Value es el JSON string)
+    if isinstance(content, list) and len(content) == 1 and isinstance(content[0], dict):
+        row = content[0]
+        if len(row) == 1:
+            k = list(row.keys())[0]
+            v = list(row.values())[0]
+            # Heurística: Key larga con sintaxis SQL y Value es un string JSON
+            if isinstance(v, str) and (v.strip().startswith('{') or v.strip().startswith('[')):
+                if len(k) > 20 and ('||' in k or 'SELECT' in k.upper() or 'LISTAGG' in k.upper() or 'JSON' in k.upper()):
+                    try:
+                        parsed = json.loads(v)
+                        # Llamada recursiva con el contenido limpio
+                        return standardize_response(parsed)
+                    except:
+                        pass
+
     # 2. Estructurar como "datos" o "narrative"
     final_result = {}
     
@@ -332,13 +365,43 @@ def process_question_with_cache(question: str, session_id: str = "default") -> d
     # Verificar si vino del caché
     from_cache = result.pop("_from_cache", False)
     
-    # Paso 4: Guardar en historial
+    # Paso 4: Interpretación de datos (Nueva funcionalidad)
+    if isinstance(result, dict) and "datos" in result and isinstance(result["datos"], list) and len(result["datos"]) > 0:
+        try:
+            print("... Generando interpretación de los datos ...")
+            # Limitamos la data para no saturar el contexto del LLM
+            data_sample = result["datos"][:20] if len(result["datos"]) > 20 else result["datos"]
+            data_str = json.dumps(data_sample, ensure_ascii=False)
+            
+            interp_chain = interpretation_prompt | llm
+            interpretation_msg = interp_chain.invoke({"data": data_str})
+            interpretation_text = interpretation_msg.content.strip()
+            
+            result["interpretacion"] = interpretation_text
+            print("Interpetación generada exitosamente.")
+        except Exception as e:
+            print(f"Error generando interpretación: {e}")
+            result["interpretacion"] = "No se pudo generar interpretación automática."
+
+    # Paso 5: Guardar en historial
     history.add_user_message(question)
     
     if isinstance(result, dict):
-        answer_text = result.get("answer", result.get("response", json.dumps(result, ensure_ascii=False)))
+        # Si incluimos interpretación, la agregamos a la respuesta textual para el historial, 
+        # pero la respuesta JSON mantiene la estructura separada.
+        base_answer = result.get("answer", result.get("response", ""))
+        if not base_answer and "interpretacion" in result:
+             base_answer = result["interpretacion"]
+        elif "interpretacion" in result:
+             base_answer = f"{base_answer}\n\nAnálisis: {result['interpretacion']}"
+             
+        if not base_answer:
+            base_answer = json.dumps(result, ensure_ascii=False)
+            
+        answer_text = base_answer
     else:
         answer_text = str(result)
+        
     history.add_ai_message(answer_text)
     
     # Calcular tiempo
