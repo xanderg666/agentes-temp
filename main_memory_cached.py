@@ -63,41 +63,33 @@ Solo responde con la pregunta reformulada, sin explicaciones adicionales."""),
 
 # 4. Prompt del Router
 router_prompt = ChatPromptTemplate.from_messages([
-    ("system", """Eres un sistema de enrutamiento inteligente para un asistente del Banco República.
+    ("system", """Eres un sistema de enrutamiento inteligente para un asistente del Banco República (Colombia).
     
 Tienes acceso a 4 endpoints. DEBES elegir el más apropiado según estas reglas:
 
-1. **runsql**: SOLO para obtener datos crudos sin explicación.
-   - Ejemplos: "dame la TRM de hoy", "muéstrame la UVR del 2020", "lista de valores"
-   - Retorna: JSON/tabla con datos puros
+1. **runsql**: Para obtener datos crudos o realizar consultas específicas sobre indicadores.
+   - REGLA CRÍTICA: Siempre que se pida un indicador económico (TRM, Inflación, UVR, etc.), usa este endpoint para obtener la integridad de los datos.
+   - Para INFLACIÓN: Pide siempre que se incluyan los conceptos o divisiones de gasto para evitar ambigüedad.
+   - Ejemplos: "¿Cuál es la TRM hoy?", "¿Inflación de enero 2025?", "Valores de la UVR"
    - needs_new_data: SIEMPRE True
 
-2. **narrate**: Para explicaciones, historias, descripciones o resúmenes que REQUIEREN consultar datos nuevos.
-   - PALABRAS CLAVE: "narrar", "explicar", "describir", "resumir", "cuéntame"
-   - Ejemplos: "narrame la TRM del 2020", "explícame la UVR de marzo"
-   - needs_new_data: True si pide datos que NO están en el contexto
+2. **narrate**: Para explicaciones detalladas que requieren nuevos datos de la base.
+   - Úsalo cuando el usuario pida "explicar", "narrar" o "contar la historia" de un dato.
+   - Ejemplo: "Nárrate la evolución de la inflación este año"
+   - needs_new_data: True
 
-3. **agent**: Para análisis complejos que REQUIEREN consultar datos nuevos.
-   - PALABRAS CLAVE: "analizar", "análisis", "comparar", "conclusiones", "profundidad"
-   - Ejemplos: "analiza la TRM del 2020 vs 2021"
-   - needs_new_data: True si pide datos nuevos
+3. **agent**: Para comparaciones o análisis complejos entre múltiples indicadores.
+   - Ejemplo: "Compara la TRM contra la inflación de los últimos 6 meses"
+   - needs_new_data: True
 
-4. **genai**: Para explicar, resumir o analizar datos que YA ESTÁN en el contexto de la conversación.
-   - Usar cuando el usuario pide explicación/análisis de datos ya proporcionados
-   - Ejemplos: "explícame esos resultados", "qué significan esos números", "resúmeme lo anterior"
-   - needs_new_data: SIEMPRE False
+4. **genai**: Para responder basándose ÚNICAMENTE en la información que ya aparece en el historial.
+   - Ejemplo: "Resume los datos anteriores", "¿Qué opinas de esos números?", "Explícame ese resultado"
+   - needs_new_data: False
 
-REGLA CRÍTICA para needs_new_data:
-- Si el contexto YA contiene los datos necesarios para responder → needs_new_data = False, usar genai
-- Si se necesitan datos NUEVOS de la base de datos → needs_new_data = True
-
-IMPORTANTE: 
-- Si el usuario dice "narrame/explicame ESOS resultados" y hay datos en contexto → genai (needs_new_data=False)
-- Si dice "narrame la TRM de OTRA fecha" → narrate (needs_new_data=True)
-- "análisis de lo anterior" con datos en contexto → genai (needs_new_data=False)
-- "análisis de nuevos datos" → agent (needs_new_data=True)
-
-Analiza la pregunta y el contexto para decidir el mejor camino."""),
+NOTAS IMPORTANTES:
+- Si el usuario pide un valor de "Enero", asume que quiere el detalle diario/mensual disponible.
+- No omitas información descriptiva. Los datos deben ser íntegros (incluyendo conceptos, series y metadatos).
+- Si hay datos en contexto → genai. Si faltan datos → runsql/narrate/agent."""),
     ("human", "{question}"),
 ])
 
@@ -108,8 +100,8 @@ router_llm = llm.with_structured_output(RouteDecision)
 def standardize_response(response_data: Any) -> dict:
     """
     Normaliza la respuesta de la API para garantizar una estructura consistente.
-    Objetivo: { "datos": [ { "fecha": "...", "serie": "...", "valor": ... } ] }
-    Elimina wrappers como RESULTADO, JSONRESPONSE, etc.
+    Objetivo: { "datos": [ { "fecha": "...", "serie": "...", "valor": ..., "metadatos...": "..." } ] }
+    Preserva todas las columnas originales para no perder integridad (como Conceptos).
     """
     if not isinstance(response_data, (dict, list)):
         return {"response": str(response_data)}
@@ -117,25 +109,18 @@ def standardize_response(response_data: Any) -> dict:
     content = response_data
     
     # 1. Desempaquetar wrappers (RESULTADO, JSONRESPONSE, etc.)
-    # Se repite para manejar anidamientos (ej: RESULTADO -> JSONRESPONSE)
     wrappers = ["RESULTADO", "JSONRESPONSE", "RESPUESTA", "resultado", "jsonresponse", "respuesta"]
     
-    for _ in range(3): # Máximo 3 niveles de desempaquetado
+    for _ in range(3):
         if isinstance(content, dict):
             found = False
+            # Intentar encontrar cualquier clave que sea uno de los wrappers
+            current_keys = {k.upper(): k for k in content.keys()}
             for w in wrappers:
-                if w in content:
-                    content = content[w]
+                if w.upper() in current_keys:
+                    content = content[current_keys[w.upper()]]
                     found = True
                     break
-                # Búsqueda Case-Insensitive si no se encuentra exacta
-                if not found:
-                    for k in content.keys():
-                        if k.upper() == w:
-                            content = content[k]
-                            found = True
-                            break
-                    if found: break
             if not found:
                 break
         else:
@@ -144,17 +129,15 @@ def standardize_response(response_data: Any) -> dict:
     # 2. Estructurar como "datos" o "narrative"
     final_result = {}
     
-    # Si es una lista, asumir que son los datos
     if isinstance(content, list):
         final_result["datos"] = content
     elif isinstance(content, dict):
-        if "arrative" in str(content.keys()): # narrative, Narrative
-            # Preservar narrativa si existe
-             for k in content.keys():
-                 if "narrative" in k.lower():
-                     final_result["narrative"] = content[k]
+        # Buscar narrativa
+        for k in content.keys():
+            if "narrative" in k.lower() or "narrativa" in k.lower():
+                final_result["narrative"] = content[k]
         
-        # Copiar datos si existen
+        # Buscar datos
         if "datos" in content:
             final_result["datos"] = content["datos"]
         elif "data" in content:
@@ -162,18 +145,15 @@ def standardize_response(response_data: Any) -> dict:
         elif "items" in content:
              final_result["datos"] = content["items"]
         
-        # Si no se encontró estructura de datos ni narrativa, pero es un dict,
-        # tal vez el dict mismo es el dato o contiene claves sueltas
+        # Si no se encontró estructura, pero es un dict con claves tipo datos
         if "datos" not in final_result and "narrative" not in final_result:
-             # Heurística: si tiene fecha/valor, es un único dato
              keys_str = str(content.keys()).lower()
-             if "fecha" in keys_str or "valor" in keys_str or "serie" in keys_str:
+             if any(x in keys_str for x in ["fecha", "valor", "serie", "trm", "uvr", "ipc"]):
                  final_result["datos"] = [content]
              else:
-                 # Si no, simplemente devolver lo que queda (puede ser genai response)
                  final_result.update(content)
     
-    # 3. Normalizar campos internos de 'datos'
+    # 3. Normalizar campos internos de 'datos' SIN ELIMINAR columnas originales
     if "datos" in final_result and isinstance(final_result["datos"], list):
         normalized_rows = []
         for row in final_result["datos"]:
@@ -181,18 +161,19 @@ def standardize_response(response_data: Any) -> dict:
                 normalized_rows.append(row)
                 continue
             
-            new_row = {}
-            # Mapeo de columnas
+            # Copiamos todo el registro original para no perder columnas (ej: Conceptos)
+            new_row = row.copy()
+            
+            # Agregamos alias estandarizados si no existen
             for k, v in row.items():
                 k_clean = k.lower().strip()
-                if k_clean in ["fecha", "date", "periodo", "time"]:
+                if k_clean in ["fecha", "date", "periodo", "time"] and "fecha" not in new_row:
                     new_row["fecha"] = v
-                elif k_clean in ["valor", "value", "amount", "precio"]:
+                elif k_clean in ["valor", "value", "amount", "precio"] and "valor" not in new_row:
                     new_row["valor"] = v
-                elif k_clean in ["serie", "series", "concepto", "concept", "name"]:
+                elif k_clean in ["serie", "series", "concepto", "concept", "name"] and "serie" not in new_row:
                     new_row["serie"] = v
-                else:
-                    new_row[k] = v # Mantener otros campos
+            
             normalized_rows.append(new_row)
         final_result["datos"] = normalized_rows
         
@@ -224,44 +205,47 @@ def call_ords_api_cached(endpoint: str, question: str) -> dict:
     print(f"URL: {url}")
     
     try:
-        response = requests.post(url, headers=headers, json=payload)
-        response.raise_for_status()
+        response = requests.post(url, headers=headers, json=payload, timeout=60)
         
-        # Intentar parsear como JSON
+        # Manejar errores de buffer o de base de datos que vienen en el body
+        if response.status_code != 200:
+            error_data = {"error": f"HTTP {response.status_code}", "details": response.text}
+            # Intentar buscar JSON embebido en el texto de error (común en errores de buffer de Oracle)
+            if "{" in response.text:
+                try:
+                    start_idx = response.text.find("{")
+                    end_idx = response.text.rfind("}") + 1
+                    embedded_data = json.loads(response.text[start_idx:end_idx])
+                    return standardize_response(embedded_data)
+                except:
+                    pass
+            return error_data
+
         try:
             result = response.json()
         except json.JSONDecodeError:
-            result = {"answer": response.text}
-        
-        # Si el resultado es una lista, envolverla en un diccionario
-        if isinstance(result, list):
-            result = {"datos": result}
+            # Si no es JSON, podría ser un texto largo que necesitamos
+            return {"answer": response.text}
         
         # --- ESTANDARIZACIÓN DE RESPUESTA ---
-        # Aplicar limpieza y normalización antes de procesar errores o cachear
         result = standardize_response(result)
         # ------------------------------------
         
-        # Manejar respuestas con errores pero datos embebidos
-        if isinstance(result, dict) and "error" in result:
-            details = result.get("details", "")
-            if isinstance(details, str) and "{" in details:
+        # Manejar respuestas con errores pero datos embebidos (ej: ORA-06502)
+        if isinstance(result, dict) and ("error" in result or "details" in result):
+            details = str(result.get("details", "") or result.get("error", ""))
+            if "{" in details:
                 try:
                     start_idx = details.find("{")
                     end_idx = details.rfind("}") + 1
-                    if start_idx != -1 and end_idx > start_idx:
-                        embedded_json = details[start_idx:end_idx]
-                        embedded_data = json.loads(embedded_json)
-                        if "datos" in embedded_data or "respuesta" in embedded_data:
-                            result = {
-                                "answer": embedded_data.get("respuesta", ""),
-                                "datos": embedded_data.get("datos", []),
-                                "warning": "Respuesta parcial extraída del error"
-                            }
-                except (json.JSONDecodeError, ValueError):
+                    embedded_json = details[start_idx:end_idx]
+                    embedded_data = json.loads(embedded_json)
+                    result = standardize_response(embedded_data)
+                    result["_warning"] = "Datos extraídos de un mensaje de error/buffer"
+                except:
                     pass
         
-        # Guardar en caché (solo respuestas exitosas sin errores)
+        # Guardar en caché
         if isinstance(result, dict) and "error" not in result:
             cache.set_ords_cache(endpoint, question, result)
         
@@ -269,10 +253,7 @@ def call_ords_api_cached(endpoint: str, question: str) -> dict:
         return result
         
     except requests.exceptions.RequestException as e:
-        error_text = ""
-        if 'response' in locals() and response is not None:
-            error_text = response.text
-        return {"error": str(e), "details": error_text or "No response", "_from_cache": False}
+        return {"error": str(e), "details": "Error de conexión con la API ORDS", "_from_cache": False}
 
 
 # 6. Lógica Principal del Agente con Memoria y Caché
