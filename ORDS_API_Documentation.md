@@ -32,6 +32,12 @@ sudo lsof -i :5001
 kill -9 <PID>
 ```
 
+saber el path , buscar el id y luego el path
+
+```bash
+sudo lsof -i :5001
+ls -l /proc/4110466/cwd /proc/4110469/cwd
+```
 
 
 ## para java
